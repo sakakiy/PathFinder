@@ -8,21 +8,18 @@ struct Point{
   int y;
 };
 
-struct Node{
-  Point p;
-  Node *next[4];
-};
-
-char buffer[10][128]; // ファイル読み込みバッファ
+char buffer[64][128]; // ファイル読み込みバッファ
 int  column      = 0; // 列数
 int  row         = 0; // 行数
 
 Point start, goal;
 
+ // 結果格納用のマップを宣言、-1 で初期化
+int resultMap[64][128];
+
 void fileRead(const char* name);
 void printMap();
-void move(Node *); 
-
+void move(int x, int y, int step);
 
 int main(int argc, char *argv[]){
   if(argc != 2){
@@ -31,16 +28,26 @@ int main(int argc, char *argv[]){
   }
   // マップファイルを読み込む
   fileRead(argv[1]);
+  
+  // 結果用マップを初期化
+  for(int i=0; i<row; i++){
+    for(int j=0; j<column; j++){
+      resultMap[i][j] = -1;
+    }
+  }
 
   // マップを表示する
   printMap();
+    
+  // マップの経路を探索する
+  move(start.x, start.y, 0); // 最初の地点の座標、ステップ数
 
-  // 開始点のノードを作る
-  Node sNode;
-  sNode.p.x = start.x;
-  sNode.p.y = start.y;
-
-  move(&sNode);
+  for(int i=0; i<row; i++){
+    for(int j=0; j<column; j++){
+      printf("%3d", resultMap[i][j]);
+    }
+    cout << "\n";
+  }
 
   return 0;
 }
@@ -98,131 +105,20 @@ void printMap(){
   
 }
 
-// 潜っていく
-void move(Node* node){
-  // cout << "node.p.x : " << node->p.x << "\n";
-  // cout << "node.p.y : " << node->p.y << "\n";
-  int x = node->p.x;
-  int y = node->p.y;
-  printf("node x : %d, y : %d\n", x, y);
+void move(int x, int y, int step){
+  // 移動先が移動不可、もしくはもとより小さいステップ数なら処理をしないで戻る
+  if('0' == buffer[y][x] || ((resultMap[y][x] != -1 )&&( resultMap[y][x] < step)) ){
 
-
-  for(int i=0; i<4; i++){
-    int tx = 0, ty = 0;
-    switch(i){
-    case 0:
-      tx = x - 1;
-      ty = y;
-      if(tx < 0)continue;
-      break;
-
-    case 1:
-      tx = x + 1;
-      ty = y;
-      if(row == tx)continue;
-      break;
-
-    case 2:
-      tx = x;
-      ty = ty - 1;
-      if(ty < 0)continue;
-      break;
-
-    case 3:
-      tx = x;
-      ty = ty + 1;
-      if(column == ty)continue;
-      break;
-    }
-    
-    //ここにいれる
-  
-    if(buffer[tx][ty] != '0'){
-      Node n;
-      n.p.x = tx;
-      n.p.y = ty;
-      node->next[i] = &n;
-      
-      if(buffer[tx][ty] == 'g'){
-        cout << "GOAL : " << n.p.x << " " << n.p.y << "\n";
-      } else {
-        move(node->next[i]);
-      }
-      
-    } else {
-      node->next[i] = NULL;
-      cout << "NULL\n";
-    }
-
+    return;
   }
+  printf(" ponit < %2d, %2d > step : %d\n", x, y, step);
+  
+  resultMap[y][x] = step;
 
-    
-  /* 
-  if(0 <= x-1 && buffer[x-1][y] == '1'){
-    Node n;
-    n.p.x = x-1;
-    n.p.y = y;
-    node->next[0] = &n;
-      
-    move(node->next[0]);
-  } else {
-    node->next[0] = NULL;
-    cout << "NULL\n";
-  }
-  */
-  
-  /*
-  
-  if(x+1 < row && buffer[y][x+1] != '0'){
-    Node n;
-    n.p.x = x+1;
-    n.p.y = y;
-    node->next[1] = &n;
-    
-    if(buffer[y][x+1] == 'g'){
-      cout << "GOAL : " << n.p.x << " " << n.p.y << "\n";
-    } else {
-      move(node->next[1]);
-    }
-    
-  } else {
-    node->next[1] = NULL;
-    cout << "NULL\n";
-    }
-  */
-
-  /*
-  if(0 <= y-1 && buffer[x][y-1] == '1'){
-    Node n;
-    n.p.x = x;
-    n.p.y = y-1;
-    node->next[2] = &n;
-      
-    move(node->next[2]);
-  } else {
-    node->next[2] = NULL;
-    cout << "NULL\n";
-    }
-  */
-  
-  /*
-  if(y+1 < column && buffer[y+1][x] != '0'){
-    Node n;
-    n.p.x = x;
-    n.p.y = y+1;
-    node->next[3] = &n;
-    
-    if(buffer[y+1][x] == 'g'){
-      cout << "GOAL : " << n.p.x << " " << n.p.y << "\n";
-    } else {
-      move(node->next[3]);
-    }
-    
-  } else {
-    node->next[3] = NULL;
-    cout << "NULL\n";
-  }
-  */  
-  
+  move(x-1, y, step+1);
+  move(x+1, y, step+1);
+  move(x, y-1, step+1);
+  move(x, y+1, step+1);
   
 }
+      
