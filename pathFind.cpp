@@ -44,7 +44,11 @@ int main(int argc, char *argv[]){
 
   for(int i=0; i<row; i++){
     for(int j=0; j<column; j++){
-      printf("%3d", resultMap[i][j]);
+      if(resultMap[i][j] == -1){
+        cout << "   ";
+      } else {
+        printf("%3d", resultMap[i][j]);
+      }
     }
     cout << "\n";
   }
