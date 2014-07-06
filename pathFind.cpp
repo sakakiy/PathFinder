@@ -21,6 +21,7 @@ Point start, goal;
 
 void fileRead(const char* name);
 void printMap();
+void move(Node *); 
 
 
 int main(int argc, char *argv[]){
@@ -33,6 +34,13 @@ int main(int argc, char *argv[]){
 
   // マップを表示する
   printMap();
+
+  // 開始点のノードを作る
+  Node sNode;
+  sNode.p.x = start.x;
+  sNode.p.y = start.y;
+
+  move(&sNode);
 
   return 0;
 }
@@ -87,5 +95,53 @@ void printMap(){
   for(int i=0; i<row; i++){
     printf("%s", buffer[i]);
   }
+  
+}
+
+// 潜っていく
+void move(Node* node){
+  // cout << "node.p.x : " << node->p.x << "\n";
+  // cout << "node.p.y : " << node->p.y << "\n";
+  int x = node->p.x;
+  int y = node->p.y;
+  printf("node x : %d, y : %d\n", x, y);
+  
+  
+  
+  
+  if(buffer[x-1][y] == '1'){
+    move(node->next[0]);
+  } else {
+    node->next[0] = NULL;
+    cout << "NULL\n";
+  }
+  
+  if(buffer[x+1][y-1] == '1'){
+    move(node->next[1]);
+  } else {
+    node->next[1] = NULL;
+    cout << "NULL\n";
+  }
+  
+  if(buffer[x][y-1] == '1'){
+    move(node->next[2]);
+  } else {
+    node->next[2] = NULL;
+    cout << "NULL\n";
+  }
+  
+  if(buffer[x][y+1] == '1'){
+    Node n;
+    n.p.x = x;
+    n.p.y = y+1;
+    node->next[3] = &n;
+      
+    move(node->next[3]);
+  } else {
+    node->next[3] = NULL;
+    cout << "NULL\n";
+  }
+  
+  
   
 }
