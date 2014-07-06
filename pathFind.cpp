@@ -105,43 +105,124 @@ void move(Node* node){
   int x = node->p.x;
   int y = node->p.y;
   printf("node x : %d, y : %d\n", x, y);
+
+
+  for(int i=0; i<4; i++){
+    int tx = 0, ty = 0;
+    switch(i){
+    case 0:
+      tx = x - 1;
+      ty = y;
+      if(tx < 0)continue;
+      break;
+
+    case 1:
+      tx = x + 1;
+      ty = y;
+      if(row == tx)continue;
+      break;
+
+    case 2:
+      tx = x;
+      ty = ty - 1;
+      if(ty < 0)continue;
+      break;
+
+    case 3:
+      tx = x;
+      ty = ty + 1;
+      if(column == ty)continue;
+      break;
+    }
+    
+    //ここにいれる
   
-  
-  
-  
-  if(buffer[x-1][y] == '1'){
+    if(buffer[tx][ty] != '0'){
+      Node n;
+      n.p.x = tx;
+      n.p.y = ty;
+      node->next[i] = &n;
+      
+      if(buffer[tx][ty] == 'g'){
+        cout << "GOAL : " << n.p.x << " " << n.p.y << "\n";
+      } else {
+        move(node->next[i]);
+      }
+      
+    } else {
+      node->next[i] = NULL;
+      cout << "NULL\n";
+    }
+
+  }
+
+    
+  /* 
+  if(0 <= x-1 && buffer[x-1][y] == '1'){
+    Node n;
+    n.p.x = x-1;
+    n.p.y = y;
+    node->next[0] = &n;
+      
     move(node->next[0]);
   } else {
     node->next[0] = NULL;
     cout << "NULL\n";
   }
+  */
   
-  if(buffer[x+1][y-1] == '1'){
-    move(node->next[1]);
+  /*
+  
+  if(x+1 < row && buffer[y][x+1] != '0'){
+    Node n;
+    n.p.x = x+1;
+    n.p.y = y;
+    node->next[1] = &n;
+    
+    if(buffer[y][x+1] == 'g'){
+      cout << "GOAL : " << n.p.x << " " << n.p.y << "\n";
+    } else {
+      move(node->next[1]);
+    }
+    
   } else {
     node->next[1] = NULL;
     cout << "NULL\n";
-  }
-  
-  if(buffer[x][y-1] == '1'){
+    }
+  */
+
+  /*
+  if(0 <= y-1 && buffer[x][y-1] == '1'){
+    Node n;
+    n.p.x = x;
+    n.p.y = y-1;
+    node->next[2] = &n;
+      
     move(node->next[2]);
   } else {
     node->next[2] = NULL;
     cout << "NULL\n";
-  }
+    }
+  */
   
-  if(buffer[x][y+1] == '1'){
+  /*
+  if(y+1 < column && buffer[y+1][x] != '0'){
     Node n;
     n.p.x = x;
     n.p.y = y+1;
     node->next[3] = &n;
-      
-    move(node->next[3]);
+    
+    if(buffer[y+1][x] == 'g'){
+      cout << "GOAL : " << n.p.x << " " << n.p.y << "\n";
+    } else {
+      move(node->next[3]);
+    }
+    
   } else {
     node->next[3] = NULL;
     cout << "NULL\n";
   }
-  
+  */  
   
   
 }
