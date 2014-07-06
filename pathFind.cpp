@@ -1,4 +1,5 @@
 #include <iostream>
+#include <unistd.h>
 
 using namespace std;
 
@@ -19,6 +20,7 @@ int resultMap[64][128];
 
 void fileRead(const char* name);
 void printMap();
+void printResultMap();
 void move(int x, int y, int step);
 
 int main(int argc, char *argv[]){
@@ -42,16 +44,7 @@ int main(int argc, char *argv[]){
   // マップの経路を探索する
   move(start.x, start.y, 0); // 最初の地点の座標、ステップ数
 
-  for(int i=0; i<row; i++){
-    for(int j=0; j<column; j++){
-      if(resultMap[i][j] == -1){
-        cout << "   ";
-      } else {
-        printf("%3d", resultMap[i][j]);
-      }
-    }
-    cout << "\n";
-  }
+  printResultMap();
 
   return 0;
 }
@@ -109,12 +102,28 @@ void printMap(){
   
 }
 
+// 結果のマップを表示
+void printResultMap(){
+  for(int i=0; i<row; i++){
+    for(int j=0; j<column; j++){
+      if(resultMap[i][j] == -1){
+        cout << "   ";
+      } else {
+        printf("%3d", resultMap[i][j]);
+      }
+    }
+    cout << "\n";
+  }  
+}
+
 void move(int x, int y, int step){
   // 移動先が移動不可、もしくはもとより小さいステップ数なら処理をしないで戻る
   if('0' == buffer[y][x] || ((resultMap[y][x] != -1 )&&( resultMap[y][x] < step)) ){
 
     return;
   }
+  printResultMap();
+  usleep(10 * 1000);
   printf(" ponit < %2d, %2d > step : %d\n", x, y, step);
   
   resultMap[y][x] = step;
