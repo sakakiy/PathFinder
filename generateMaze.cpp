@@ -1,5 +1,6 @@
 #include <iostream>
 #include <stdlib.h>
+#include <time.h>
 
 using namespace std;
 
@@ -56,23 +57,35 @@ void printMaze(char buf[][width + 2]){
 // 迷路を生成する
 //
 void generateMaze(char buf[][width + 2]){
+  
+  // 乱数初期化
+  srand((unsigned)time(NULL));
 
   int randomNum;
   
   // ランダムで何か入れる（予定）
-  for(int i=0; i<height; i++){
-    for(int j=0; j<width; j++){
+  for(int i=1; i<height - 1; i++){
+    for(int j=1; j<width - 1; j++){
       // buf[i][j] = '0';
       //itoa(rand() % 5, &ascii, 10);
       
-      randomNum = rand() % 6;
-      if(randomNum < 3){
-        buf[i][j] = '1';
+      randomNum = rand() % 3;
+      if(randomNum == 1){
+        buf[i  ][j  ] = '1';
+        buf[i+1][j  ] = '1';
+        buf[i-1][j  ] = '1';
+        buf[i  ][j+1] = '1';
+        buf[i  ][j-1] = '1';
       } else {
-        buf[i][j] = '0';
+        //       buf[i][j] = '0';
       }
     }
   }
+  
+  // スタート地点とゴール地点を設定
+  // スタート地点は上の方に、ゴール地点は下の方に来るように設定
+  buf[1 + (rand() % (height/2 - 1)) ][1 + (rand() % (width - 1))] = 's';
+  buf[height/2 + (rand() % (height/2 - 1)) ][1 + (rand() % (width - 1))] = 'g';
   
 }
 
