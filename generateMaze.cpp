@@ -6,7 +6,7 @@ const int width  = 15;
 const int height = 20;
 char buffer[height][width + 2];
 
-static void saveMazeFile(char buf[][width + 2], const char* name);
+void saveMazeFile(char buf[][width + 2], const char* name);
 
 int main(int argc, char* argv[]){
   
@@ -37,7 +37,7 @@ int main(int argc, char* argv[]){
 }
 
 // 迷路をファイルに書き込む
-static void saveMazeFile(char buf[][width + 2], const char* name){
+void saveMazeFile(char buf[][width + 2], const char* name){
   // ファイルポインタ
   FILE* pFile = fopen(name, "w");
   
