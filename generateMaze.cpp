@@ -1,4 +1,5 @@
 #include <iostream>
+#include <stdlib.h>
 
 using namespace std;
 
@@ -54,12 +55,22 @@ void printMaze(char buf[][width + 2]){
 ////
 // 迷路を生成する
 //
-void generateMaze(char buf[][width + 2]){ 
+void generateMaze(char buf[][width + 2]){
+
+  int randomNum;
   
   // ランダムで何か入れる（予定）
   for(int i=0; i<height; i++){
     for(int j=0; j<width; j++){
-      buf[i][j] = '0';
+      // buf[i][j] = '0';
+      //itoa(rand() % 5, &ascii, 10);
+      
+      randomNum = rand() % 6;
+      if(randomNum < 3){
+        buf[i][j] = '1';
+      } else {
+        buf[i][j] = '0';
+      }
     }
   }
   
