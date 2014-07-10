@@ -122,9 +122,9 @@ void move(int x, int y, int step){
 
     return;
   }
-  printResultMap();
-  usleep(10 * 1000);
-  printf(" ponit < %2d, %2d > step : %d\n", x, y, step);
+  // printResultMap();
+  //  usleep(1 * 1000);
+  // printf(" ponit < %2d, %2d > step : %d\n", x, y, step);
   
   resultMap[y][x] = step;
 
