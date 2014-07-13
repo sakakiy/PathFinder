@@ -84,21 +84,21 @@ void generateMaze(char buf[][WIDTH + 2]){
   
   // スタート地点とゴール地点を設定
   // スタート地点は上の方に、ゴール地点は下の方に来るように設定
-  buf[1 + (rand() % (height/2 - 1)) ][1 + (rand() % (width - 1))] = 's';
-  buf[height/2 + (rand() % (height/2 - 1)) ][1 + (rand() % (width - 1))] = 'g';
+  buf[1 + (rand() % (HEIGHT/2 - 1)) ][1 + (rand() % (WIDTH - 1))] = 's';
+  buf[HEIGHT/2 + (rand() % (HEIGHT/2 - 1)) ][1 + (rand() % (WIDTH - 1))] = 'g';
   
 }
 
 ////
 // 迷路をファイルに書き込む
 //
-void saveMazeFile(char buf[][width + 2], const char* name){
+void saveMazeFile(char buf[][WIDTH + 2], const char* name){
   
   // ファイルポインタ
   FILE* pFile = fopen(name, "w");
   
   // ファイル書き込み
-  for(int i=0; i<height; i++){
+  for(int i=0; i<HEIGHT; i++){
     fputs(buf[i], pFile);
   }
   fclose(pFile);
