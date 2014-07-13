@@ -7,8 +7,9 @@ using namespace std;
 const int WIDTH  = 15;
 const int HEIGHT = 20;
 
-
 void generateMaze(char buf[][WIDTH + 2]);
+void generateRandomMaze(char buf[][WIDTH + 2]);
+void step(int px, int py, int x, int y);
 void saveMazeFile(char buf[][WIDTH + 2], const char* name);
 void printMaze(char buf[][WIDTH + 2]);
 
@@ -32,7 +33,8 @@ int main(int argc, char* argv[]){
   }
   
   // 迷路を生成する
-  generateMaze(buffer);
+  //  generateMaze(buffer);
+  generateRandomMaze(buffer);
 
   // 迷路を表示する
   printMaze(buffer);
@@ -102,5 +104,28 @@ void saveMazeFile(char buf[][WIDTH + 2], const char* name){
     fputs(buf[i], pFile);
   }
   fclose(pFile);
+  
+}
+
+////
+// 通路上の迷路をランダムに作成する
+//
+void generateRandomMaze(char buf[][WIDTH + 2]){
+
+  // 乱数初期化
+  srand((unsigned)time(NULL));
+
+  // スタート地点とゴール地点を設定
+  // スタート地点は上の方に、ゴール地点は下の方に来るように設定
+  buf[1 + (rand() % (HEIGHT/2 - 1)) ][1 + (rand() % (WIDTH - 1))] = 's';
+  buf[HEIGHT/2 + (rand() % (HEIGHT/2 - 1)) ][1 + (rand() % (WIDTH - 1))] = 'g';
+
+  
+}
+
+////
+// 迷路を作成するときの1ステップ
+//
+void step(int px, int py, int x, int y){
   
 }
