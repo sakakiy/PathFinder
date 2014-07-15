@@ -1,6 +1,7 @@
 #include <iostream>
 #include <stdlib.h>
 #include <time.h>
+#include <unistd.h>
 
 using namespace std;
 
@@ -9,7 +10,7 @@ const int HEIGHT = 20;
 
 void generateMaze(char buf[][WIDTH + 2]);
 void generateRandomMaze(char buf[][WIDTH + 2]);
-void step(int px, int py, int x, int y);
+void step(char buf[][WIDTH + 2], int px, int py, int x, int y);
 void saveMazeFile(char buf[][WIDTH + 2], const char* name);
 void printMaze(char buf[][WIDTH + 2]);
 
@@ -117,15 +118,52 @@ void generateRandomMaze(char buf[][WIDTH + 2]){
 
   // スタート地点とゴール地点を設定
   // スタート地点は上の方に、ゴール地点は下の方に来るように設定
-  buf[1 + (rand() % (HEIGHT/2 - 1)) ][1 + (rand() % (WIDTH - 1))] = 's';
-  buf[HEIGHT/2 + (rand() % (HEIGHT/2 - 1)) ][1 + (rand() % (WIDTH - 1))] = 'g';
-
+  int startX = 1 + (rand() % (WIDTH - 1));
+  int startY = 1 + (rand() % (HEIGHT/2 - 1));
+  int goalX  = 1 + (rand() % (WIDTH - 1));
+  int goalY  = HEIGHT/2 + (rand() % (HEIGHT/2 - 1)) ;
+  //  buf[startY ][startX] = 's';
   
+  // ゴールを設定
+  buf[goalY][goalX]    = 'g';
+  
+  // スタート地点の座標を取得してから配列に入れるように、上の行を変更する
+  step(buf, startX - 1, startY, startX, startY);
+
+  // 迷路を作成し終えてからスタート地点を設定
+  buf[startY ][startX] = 's';
 }
 
 ////
 // 迷路を作成するときの1ステップ
 //
-void step(int px, int py, int x, int y){
+void step(char buf[][WIDTH + 2], int px, int py, int x, int y){
+  if(buf[y][x] == '0'){
+    if(0 < x && x < WIDTH -1 && 0 < y && y < HEIGHT - 1){
+      buf[y][x] = '1';
+      printf("( %2d, %2d )\n", x, y);
+      printMaze(buf);
+      cout << "\n";
+      usleep(50 * 1000);
+    }
+  } else {
+    return;
+  }
+  int dx = x - px;
+  int dy = y - py;
+
+  for(int i=0; i<4; i++){
+    if(rand()%2 == 0){
+
+      if(i <= 1) { // 5割でまっすぐ
+        step(buf, x, y, x + dx, y + dy);
+      } else if(i == 2){ // 2.5割でまがる1
+        step(buf, x, y, x + dy, y + dx);
+      } else { // 2.5割でまがる2
+        step(buf, x, y, x - dy, y - dx);
+      }
+      
+    } 
+  }
   
 }
