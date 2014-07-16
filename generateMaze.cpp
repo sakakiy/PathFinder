@@ -5,8 +5,10 @@
 
 using namespace std;
 
-const int WIDTH  = 15;
-const int HEIGHT = 20;
+const int  WIDTH  = 15;
+const int  HEIGHT = 20;
+const char WALL   = '0';
+const char WAY    = '1';
 
 void generateMaze(char buf[][WIDTH + 2]);
 void generateRandomMaze(char buf[][WIDTH + 2]);
@@ -25,7 +27,7 @@ int main(int argc, char* argv[]){
   // バッファの初期化
   for(int i=0; i<HEIGHT; i++){
     for(int j=0; j<WIDTH; j++){
-      buffer[i][j] = '0';
+      buffer[i][j] = WALL;
     }
     
     // ヌル文字と改行を文末につける
@@ -69,18 +71,18 @@ void generateMaze(char buf[][WIDTH + 2]){
   // ランダムで何か入れる（予定）
   for(int i=1; i<HEIGHT - 1; i++){
     for(int j=1; j<WIDTH - 1; j++){
-      // buf[i][j] = '0';
+      // buf[i][j] = WALL;
       //itoa(rand() % 5, &ascii, 10);
       
       randomNum = rand() % 3;
       if(randomNum == 1){
-        buf[i  ][j  ] = '1';
-        buf[i+1][j  ] = '1';
-        buf[i-1][j  ] = '1';
-        buf[i  ][j+1] = '1';
-        buf[i  ][j-1] = '1';
+        buf[i  ][j  ] = WAY;
+        buf[i+1][j  ] = WAY;
+        buf[i-1][j  ] = WAY;
+        buf[i  ][j+1] = WAY;
+        buf[i  ][j-1] = WAY;
       } else {
-        //       buf[i][j] = '0';
+        //       buf[i][j] = WALL;
       }
     }
   }
@@ -138,27 +140,40 @@ void generateRandomMaze(char buf[][WIDTH + 2]){
 // 迷路を作成するときの1ステップ
 //
 void step(char buf[][WIDTH + 2], int px, int py, int x, int y){
-  if(buf[y][x] == '0'){
+
+  // 前のマスからの差分
+  int dx = x - px;
+  int dy = y - py;
+  
+  // マスにまだ道（1）がなければ
+  if(buf[y][x] == WALL){
+    // 壁より外に出ていなければ
     if(0 < x && x < WIDTH -1 && 0 < y && y < HEIGHT - 1){
-      buf[y][x] = '1';
+      
+      
+      // さらに一つ先（前左右）が道（1）なら道にせず戻る
+      if((buf[y + dy][x + dx] == WAY) || (buf[y + dx][x + dy] == WAY) || (buf[y - dx][x - dy] == WAY)){
+        return;
+      }
+      // 道にする
+      buf[y][x] = WAY;
       printf("( %2d, %2d )\n", x, y);
       printMaze(buf);
       cout << "\n";
       usleep(50 * 1000);
     }
   } else {
+    // 既に移動先のマスが道なら何もしない
     return;
   }
-  int dx = x - px;
-  int dy = y - py;
-
+  
   for(int i=0; i<4; i++){
     if(rand()%2 == 0){
-
+      
       if(i <= 1) { // 5割でまっすぐ
         step(buf, x, y, x + dx, y + dy);
       } else if(i == 2){ // 2.5割でまがる1
-        step(buf, x, y, x + dy, y + dx);
+        step(buf, x, y, x + dy, y + dx); // 横に曲がるため、dx|dy が y|x と互いに逆にたされる
       } else { // 2.5割でまがる2
         step(buf, x, y, x - dy, y - dx);
       }
