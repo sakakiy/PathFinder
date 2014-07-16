@@ -7,8 +7,8 @@ using namespace std;
 
 const int  WIDTH  = 15;
 const int  HEIGHT = 20;
-const char WALL   = '0';
-const char WAY    = '1';
+const char WALL   = 'x';
+const char WAY    = ' ';
 
 void generateMaze(char buf[][WIDTH + 2]);
 void generateRandomMaze(char buf[][WIDTH + 2]);
@@ -124,61 +124,26 @@ void generateRandomMaze(char buf[][WIDTH + 2]){
   int startY = 1 + (rand() % (HEIGHT/2 - 1));
   int goalX  = 1 + (rand() % (WIDTH - 1));
   int goalY  = HEIGHT/2 + (rand() % (HEIGHT/2 - 1)) ;
-  //  buf[startY ][startX] = 's';
   
-  // ゴールを設定
-  buf[goalY][goalX]    = 'g';
+  // TODO
+  // このへんから step を呼び出したりするかも
   
-  // スタート地点の座標を取得してから配列に入れるように、上の行を変更する
-  step(buf, startX - 1, startY, startX, startY);
 
-  // 迷路を作成し終えてからスタート地点を設定
-  buf[startY ][startX] = 's';
 }
 
 ////
 // 迷路を作成するときの1ステップ
+// 引数を、進む方向と座標に変更する。
 //
 void step(char buf[][WIDTH + 2], int px, int py, int x, int y){
-
-  // 前のマスからの差分
-  int dx = x - px;
-  int dy = y - py;
   
-  // マスにまだ道（1）がなければ
-  if(buf[y][x] == WALL){
-    // 壁より外に出ていなければ
-    if(0 < x && x < WIDTH -1 && 0 < y && y < HEIGHT - 1){
-      
-      
-      // さらに一つ先（前左右）が道（1）なら道にせず戻る
-      if((buf[y + dy][x + dx] == WAY) || (buf[y + dx][x + dy] == WAY) || (buf[y - dx][x - dy] == WAY)){
-        return;
-      }
-      // 道にする
-      buf[y][x] = WAY;
-      printf("( %2d, %2d )\n", x, y);
-      printMaze(buf);
-      cout << "\n";
-      usleep(50 * 1000);
-    }
-  } else {
-    // 既に移動先のマスが道なら何もしない
-    return;
-  }
+  // TODO
   
-  for(int i=0; i<4; i++){
-    if(rand()%2 == 0){
-      
-      if(i <= 1) { // 5割でまっすぐ
-        step(buf, x, y, x + dx, y + dy);
-      } else if(i == 2){ // 2.5割でまがる1
-        step(buf, x, y, x + dy, y + dx); // 横に曲がるため、dx|dy が y|x と互いに逆にたされる
-      } else { // 2.5割でまがる2
-        step(buf, x, y, x - dy, y - dx);
-      }
-      
-    } 
-  }
+  // 進む方向を決める
+  // 進めるかどうか、2マス先まで見る
+  // 壁とかじゃなければ2マス進み道にする
+  
+  // 進めなくなったらリターン、今までの道（偶数点）からランダムに再開する
+  // すべての道が埋まるまでやる?全体を調べておかないといけない。
   
 }
