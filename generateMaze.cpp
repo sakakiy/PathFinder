@@ -5,8 +5,8 @@
 
 using namespace std;
 
-const int  WIDTH  = 15;
-const int  HEIGHT = 20;
+const int  WIDTH  = 31; // 偶数の通りをキレイに通るように奇数とする
+const int  HEIGHT = 31; // 同上
 const char WALL   = 'x';
 const char WAY    = '1';
 const char EMPTY  = ' ';
@@ -123,12 +123,9 @@ void generateRandomMaze(char buf[][WIDTH + 2]){
   // 乱数初期化
   srand((unsigned)time(NULL));
 
-  // スタート地点とゴール地点を設定
-  // スタート地点は上の方に、ゴール地点は下の方に来るように設定
-  int startX = 1 + (rand() % (WIDTH - 1));
-  int startY = 1 + (rand() % (HEIGHT/2 - 1));
-  int goalX  = 1 + (rand() % (WIDTH - 1));
-  int goalY  = HEIGHT/2 + (rand() % (HEIGHT/2 - 1)) ;
+  // スタート地点を、偶数の点から選ぶ
+  int startX = 2 + (rand() % (WIDTH/2 - 1)) * 2;
+  int startY = 2 + (rand() % (HEIGHT/2 - 1)) * 2;  
   
   // TODO
   // このへんから step を呼び出したりするかも
