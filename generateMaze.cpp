@@ -129,7 +129,7 @@ void generateRandomMaze(char buf[][WIDTH + 2]){
   
   // TODO
   // このへんから step を呼び出したりするかも
-  step(buf, 0, 0, startX, startY);
+  step(buf, startX - 2, startY, startX, startY);
   
   // スタート地点を記しておく
   buf[startY][startX] = 's';
@@ -137,66 +137,36 @@ void generateRandomMaze(char buf[][WIDTH + 2]){
 
 ////
 // 迷路を作成するときの1ステップ
-// 引数を、進む方向と座標に変更する。
+// 引数は 迷路バッファ、前の地点座標、移動してきた地点座標
 //
 void step(char buf[][WIDTH + 2], int px, int py, int x, int y){
-  
-  // TODO
+  // 今いる場所が無効（壁の外側、または壁か道）なら return
+  if((x < 0 || WIDTH < x) || (y < 0 || HEIGHT < y) || buf[y][x] != EMPTY){
+      return;
+  }
+
+  // 今きた経路を「道」としてを確定する
+  int dx = (x - px)/2;
+  int dy = (y - py)/2;
+
+  buf[y][x]       = WAY;
+  buf[y-dy][x-dx] = WAY;
+ 
   //  srand((unsigned)time(NULL));
   usleep(100 * 1000);
   printMaze(buf);
-  
-  // 進む方向を決める、元来た道を戻ることになるなら再度道を決める
-  int dx, dy;
-  do{    
-    switch(rand()%4){
-    case 0:
-      dx = 1;
-      dy = 0;
-      break;
-      
-    case 1:
-      dx = 0;
-      dy = 1;
-      break;
-      
-    case 2:
-      dx = -1;
-      dy = 0;
-      break;
-      
-    case 3:
-      dx = 0;
-      dy = -1;
-      break;
-      
-    default:
-      cout << "default\n";
-      break;
-    }
-  }while( (x - px + 2*dx) == 0 && (y - py + 2*dy == 0));
-  
-  // 次に向かう先の座標
-  int nx = x + dx + dx;
-  int ny = y + dy + dy;
-  // 進めるかどうか、2マス先まで見る
-  if(0 <= nx && nx < WIDTH){
-    if(0 <= ny && ny < HEIGHT){
-      // 1マス、2マス先に道がなければ道にする
-      if(buf[y + dy][x + dx] == EMPTY && buf[ny][nx] == EMPTY){
-        buf[y + dy][x + dx] = WAY;
-        buf[ny][nx] = WAY;
-        // 次のステップへ
-        step(buf, x, y, nx, ny);
-      }
-    }
+
+  // ある程度ランダムでどこかへ行く
+  switch(rand()%2){
+  case 0:
+    step(buf, x, y, x + 2, y    );
+    step(buf, x, y, x - 2, y    );
+    break;
+
+  case 1:
+    step(buf, x, y, x    , y + 2);
+    step(buf, x, y, x    , y - 2);
+    break;
   }
-  // 進めなければリターンする
-  return;
-  
-  // 壁とかじゃなければ2マス進み道にする
-  
-  // 進めなくなったらリターン、今までの道（偶数点）からランダムに再開する
-  // すべての道が埋まるまでやる?全体を調べておかないといけない。
-  
+
 }
