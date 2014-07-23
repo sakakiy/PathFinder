@@ -9,13 +9,17 @@ struct Point{
   int y;
 };
 
+const char WALL    = 'x';
+const char WAY     = '1';
+const char EMPTY   = ' ';
+
 char buffer[64][128]; // ファイル読み込みバッファ
 int  column      = 0; // 列数
 int  row         = 0; // 行数
 
 Point start, goal;
 
- // 結果格納用のマップを宣言、-1 で初期化
+// 結果格納用のマップを宣言、-1 で初期化
 int resultMap[64][128];
 
 void fileRead(const char* name);
@@ -40,10 +44,11 @@ int main(int argc, char *argv[]){
 
   // マップを表示する
   printMap();
-    
+  
   // マップの経路を探索する
   move(start.x, start.y, 0); // 最初の地点の座標、ステップ数
-
+  
+  // 結果を表示する
   printResultMap();
 
   return 0;
@@ -75,7 +80,7 @@ void fileRead(const char* name){
 
       default:
         break;
-       }
+      }
     }
     
     index++;
@@ -118,20 +123,20 @@ void printResultMap(){
 
 void move(int x, int y, int step){
   // 移動先が移動不可、もしくはもとより小さいステップ数なら処理をしないで戻る
-  if('0' == buffer[y][x] || ((resultMap[y][x] != -1 )&&( resultMap[y][x] < step)) ){
-
+  if((WAY != buffer[y][x] && 's' != buffer[y][x])|| ((resultMap[y][x] != -1 )&&( resultMap[y][x] < step)) ){
     return;
   }
-  // printResultMap();
-  //  usleep(1 * 1000);
-  // printf(" ponit < %2d, %2d > step : %d\n", x, y, step);
   
   resultMap[y][x] = step;
+  
+  printResultMap();
+  usleep(50 * 1000);
+  printf(" ponit < %2d, %2d > step : %d\n", x, y, step);
+  
 
   move(x-1, y, step+1);
   move(x+1, y, step+1);
   move(x, y-1, step+1);
   move(x, y+1, step+1);
-  
+
 }
-      
