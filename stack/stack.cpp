@@ -1,15 +1,18 @@
-#include <stack.h>
+#include "stack.h"
 
 using namespace std;
 
 
 // スタックの初期化
 void Stack::init(){
+
+  // スタックの地点を指す変数を初期化
+  ind = 0;
   cout << "Stack init.\n";
 }
 
 // 要素をスタックにのせる
-void Stack::push(int){
+void Stack::push(int a){
   if(ind < MAX){
     array[ind] = a;
     ind++;

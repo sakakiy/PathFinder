@@ -4,8 +4,8 @@ using namespace std;
 
 class Stack{
 
-  int ind       = 0;
-  const int MAX = 10;
+  int ind;
+  const static int MAX = 10;
   int array[MAX];
 
  public:
