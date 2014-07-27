@@ -12,16 +12,8 @@ using namespace std;
 
 Stack stack(15);
 
-void push(int);
-int  pop();
-void printArray();
-
 int main(){
-
-  //stack = new Stack(10);
-
-  //stack.init();
-  
+  // 乱数初期化
   srand((unsigned)time(NULL));
   
   for(int i=0; i<20; i++){
