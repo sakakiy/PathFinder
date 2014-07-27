@@ -2,6 +2,19 @@
 
 using namespace std;
 
+// コンストラクタで MAX のコンストラクタを呼びを初期化する
+Stack::Stack(int size) : MAX(size){
+  cout << "constructor\n";
+  //  MAX = size;
+  array = new int[MAX];
+  init();
+}
+
+Stack::~Stack(){
+  cout << "destructor\n";
+  delete[] array;
+}
+
 // スタックの初期化
 void Stack::init(){
 

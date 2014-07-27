@@ -10,7 +10,7 @@ using namespace std;
 // const int MAX = 10;
 // int array[MAX];
 
-Stack stack;
+Stack stack(15);
 
 void push(int);
 int  pop();
@@ -18,7 +18,9 @@ void printArray();
 
 int main(){
 
-  stack.init();
+  //stack = new Stack(10);
+
+  //stack.init();
   
   srand((unsigned)time(NULL));
   
