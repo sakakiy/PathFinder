@@ -2,12 +2,17 @@
 
 using namespace std;
 
-
 // スタックの初期化
 void Stack::init(){
 
   // スタックの地点を指す変数を初期化
   ind = 0;
+
+  // スタック配列を初期化
+  for(int i=0; i<MAX; i++){
+    array[i] = 0;
+  }
+  
   cout << "Stack init.\n";
 }
 
