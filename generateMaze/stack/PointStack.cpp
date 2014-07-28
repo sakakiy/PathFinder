@@ -1,22 +1,22 @@
-#include "stack.h"
+#include "PointStack.h"
 
 using namespace std;
 
 // コンストラクタで MAX のコンストラクタを呼びを初期化する
-Stack::Stack(int size) : MAX(size){
+PointStack::PointStack(int size) : MAX(size){
   cout << "constructor\n";
   //  MAX = size;
   array = new int[MAX];
   init();
 }
 
-Stack::~Stack(){
+PointStack::~PointStack(){
   cout << "destructor\n";
   delete[] array;
 }
 
 // スタックの初期化
-void Stack::init(){
+void PointStack::init(){
 
   // スタックの地点を指す変数を初期化
   ind = 0;
@@ -26,11 +26,11 @@ void Stack::init(){
     array[i] = 0;
   }
   
-  cout << "Stack init.\n";
+  cout << "PointStack init.\n";
 }
 
 // 要素をスタックにのせる
-void Stack::push(int a){
+void PointStack::push(int a){
   if(ind < MAX){
     array[ind] = a;
     ind++;
@@ -41,7 +41,7 @@ void Stack::push(int a){
 }
 
 // 要素をスタックから取り出す
-int Stack::pop(){
+int PointStack::pop(){
   if(0 < ind){
     ind--;
     return array[ind];
@@ -53,7 +53,7 @@ int Stack::pop(){
 
 
 // スタックの状態を表示する
-void Stack::printStack(){
+void PointStack::printPointStack(){
   cout << "array : ";
   for(int i=0; i<ind; i++){
     cout << array[i] << " ";
