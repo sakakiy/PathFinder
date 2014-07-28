@@ -12,16 +12,16 @@ pathFind: pathFind.cpp
 
 ####################
 # スタックのテストプログラムをビルド
-generateMaze/mainStack: generateMaze/main.cpp generateMaze/stack/stack.o
-	c++ -o generateMaze/mainStack generateMaze/main.cpp generateMaze/stack/stack.o
+generateMaze/mainStack: generateMaze/main.cpp generateMaze/stack/PointStack.o
+	c++ -o generateMaze/mainStack generateMaze/main.cpp generateMaze/stack/PointStack.o
 
-generateMaze/stack/stack.o: generateMaze/stack/stack.cpp
-	c++ -o generateMaze/stack/stack.o -c generateMaze/stack/stack.cpp
+generateMaze/stack/PointStack.o: generateMaze/stack/PointStack.cpp
+	c++ -o generateMaze/stack/PointStack.o -c generateMaze/stack/PointStack.cpp
 
 ####################
 # クリーン
 clean:
 	rm -f *.o gMaze
 	rm -f *.o pathFind
-	rm -f generateMaze/stack/stack.o generateMaze/mainStack
+	rm -f generateMaze/stack/PointStack.o generateMaze/mainStack
 
