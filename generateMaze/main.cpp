@@ -18,7 +18,8 @@ int main(){
   
   for(int i=0; i<20; i++){
     if(rand()%2==0){
-      stack.push(rand()%10);
+      Point p = {rand()%10, rand()%10};
+      stack.push(p);
       stack.printPointStack();
     } else {
       stack.pop();

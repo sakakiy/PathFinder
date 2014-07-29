@@ -11,14 +11,14 @@ class PointStack{
 
   int ind;
   const int MAX;
-  int * array;
+  Point * array;
 
  public:
   PointStack(int size);
   ~PointStack();
   void init();       // スタックの初期化
-  void push(int);    // 要素をスタックにのせる
-  int  pop();        // 要素をスタックから取り出す
+  void push(Point);    // 要素をスタックにのせる
+  Point  pop();        // 要素をスタックから取り出す
   void printPointStack(); // スタックの状態を表示する
 
 };

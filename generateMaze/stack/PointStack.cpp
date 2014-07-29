@@ -6,7 +6,7 @@ using namespace std;
 PointStack::PointStack(int size) : MAX(size){
   cout << "constructor\n";
   //  MAX = size;
-  array = new int[MAX];
+  array = new Point[MAX];
   init();
 }
 
@@ -23,14 +23,15 @@ void PointStack::init(){
 
   // スタック配列を初期化
   for(int i=0; i<MAX; i++){
-    array[i] = 0;
+    Point p = {0, 0};
+    array[i] = p;
   }
   
   cout << "PointStack init.\n";
 }
 
 // 要素をスタックにのせる
-void PointStack::push(int a){
+void PointStack::push(Point a){
   if(ind < MAX){
     array[ind] = a;
     ind++;
@@ -41,13 +42,14 @@ void PointStack::push(int a){
 }
 
 // 要素をスタックから取り出す
-int PointStack::pop(){
+Point PointStack::pop(){
   if(0 < ind){
     ind--;
     return array[ind];
   } else {
     cout << "stack empty.\n";
-    return -1;
+    Point p = {-1, -1};
+    return p;
   }
 }
 
@@ -56,7 +58,8 @@ int PointStack::pop(){
 void PointStack::printPointStack(){
   cout << "array : ";
   for(int i=0; i<ind; i++){
-    cout << array[i] << " ";
+    //cout << array[i].x << " ";
+    printf("(%2d,%2d) ", array[i].x, array[i].y);
   }
   cout << "\n";
 }
